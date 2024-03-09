@@ -2,3 +2,4 @@ streamlit==0.89.0
 youtube-search-python
 yt-dlp
 pydub
+ffmpeg
