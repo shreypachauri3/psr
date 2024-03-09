@@ -73,7 +73,7 @@ def main(singer, nov, nos, output_file='final.mp3'):
     return output_path
 
 def streamlit_app():
-    st.title("YouTube Audio Cropper")
+    st.title("Create Your Own Mashup!!")
 
     singer = st.text_input("Enter Singer's Name:")
     no_of_videos = st.number_input("Enter number of videos to extract:", value=5, min_value=1)
