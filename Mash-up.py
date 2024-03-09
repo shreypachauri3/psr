@@ -5,6 +5,7 @@ from pydub import AudioSegment
 import os
 import sys
 import base64
+import time
 
 def get_youtube_urls(search_query, n=5):
     try:
@@ -65,6 +66,9 @@ def main(singer, nov, nos, output_file='final.mp3'):
     query = f"{singer}'s latest song"
     urls = get_youtube_urls(query, nov)
 
+    st.spinner("Generating Audio... Please wait.")
+    time.sleep(2)  # Simulate a longer process (remove in actual implementation)
+
     for i in range(nov):
         download_audio_ytdlp(urls[i], 'raw_mp3')
 
@@ -72,8 +76,34 @@ def main(singer, nov, nos, output_file='final.mp3'):
 
     return output_path
 
+def custom_balloons():
+    st.markdown("""
+    <style>
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0);
+                opacity: 0;
+            }
+            25% {
+                transform: translateY(-30px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+        }
+        .balloon {
+            position: absolute;
+            font-size: 24px;
+            animation: floatUp 4s ease-in-out;
+        }
+    </style>
+    <div class="balloon">🎈</div>
+    """, unsafe_allow_html=True)
+
 def streamlit_app():
-    st.title("Create Your Own Mashup!!")
+    st.title("YouTube Audio Cropper")
 
     singer = st.text_input("Enter Singer's Name:")
     no_of_videos = st.number_input("Enter number of videos to extract:", value=5, min_value=1)
@@ -81,14 +111,18 @@ def streamlit_app():
     output_file = st.text_input("Enter output file name:", value='final.mp3')
 
     if st.button("Generate Audio"):
-        generated_file = main(singer, int(no_of_videos), int(no_of_seconds) * 1000, output_file)
-        st.success(f"Audio generation complete! Output file: {generated_file}")
+        with st.spinner("Generating Audio... Please wait."):
+            generated_file = main(singer, int(no_of_videos), int(no_of_seconds) * 1000, output_file)
+            time.sleep(2)  # Simulate a longer process (remove in actual implementation)
+            st.success(f"Audio generation complete! Output file: {generated_file}")
 
-        with open(generated_file, 'rb') as f:
-            audio_data = f.read()
-        b64_audio = base64.b64encode(audio_data).decode('utf-8')
-        href = f'<a href="data:audio/mp3;base64,{b64_audio}" download="{output_file}">Download Audio</a>'
-        st.markdown(href, unsafe_allow_html=True)
+            with open(generated_file, 'rb') as f:
+                audio_data = f.read()
+            b64_audio = base64.b64encode(audio_data).decode('utf-8')
+            href = f'<a href="data:audio/mp3;base64,{b64_audio}" download="{output_file}">Download Audio</a>'
+            st.markdown(href, unsafe_allow_html=True)
+
+        custom_balloons()
 
 if __name__ == "__main__":
     streamlit_app()

@@ -1,0 +1,4 @@
+streamlit==0.89.0
+youtubesearchpython==1.4.1
+yt-dlp==2022.02.27
+pydub==0.26.0
