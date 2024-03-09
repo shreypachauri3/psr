@@ -1,4 +1,4 @@
 streamlit==0.89.0
 youtube-search-python
-yt-dlp==2022.02.27
-pydub==0.26.0
+yt-dlp
+pydub
