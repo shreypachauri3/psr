@@ -76,32 +76,6 @@ def main(singer, nov, nos, output_file='final.mp3'):
 
     return output_path
 
-def custom_balloons():
-    st.markdown("""
-    <style>
-        @keyframes floatUp {
-            0% {
-                transform: translateY(0);
-                opacity: 0;
-            }
-            25% {
-                transform: translateY(-30px);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100px);
-                opacity: 0;
-            }
-        }
-        .balloon {
-            position: absolute;
-            font-size: 24px;
-            animation: floatUp 4s ease-in-out;
-        }
-    </style>
-    <div class="balloon">🎈</div>
-    """, unsafe_allow_html=True)
-
 def streamlit_app():
     st.title("YouTube Audio Cropper")
 
@@ -115,14 +89,13 @@ def streamlit_app():
             generated_file = main(singer, int(no_of_videos), int(no_of_seconds) * 1000, output_file)
             time.sleep(2)  # Simulate a longer process (remove in actual implementation)
             st.success(f"Audio generation complete! Output file: {generated_file}")
+            st.balloons()
 
             with open(generated_file, 'rb') as f:
                 audio_data = f.read()
             b64_audio = base64.b64encode(audio_data).decode('utf-8')
             href = f'<a href="data:audio/mp3;base64,{b64_audio}" download="{output_file}">Download Audio</a>'
             st.markdown(href, unsafe_allow_html=True)
-
-        custom_balloons()
 
 if __name__ == "__main__":
     streamlit_app()
